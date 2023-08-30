@@ -4,24 +4,14 @@ export const getJoke = () => {
   );
 };
 
-let transientState = {
-  joke: "",
-  told: false,
-};
-
-export const postNewJoke = () => {
-  if (transientState.joke != "" && transientState.told === true) {
-    const postOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(transientState),
-    };
-    fetch("http://localhost:8088/jokes", postOptions);
-  }
-  transientState = {
-    joke: "",
-    told: false,
+export const postNewJoke = (jokeText) => {
+  const transientState = { text: jokeText, told: false };
+  const postOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(transientState),
   };
+  fetch("http://localhost:8088/jokes", postOptions);
 };
