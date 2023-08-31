@@ -5,6 +5,7 @@ import {
   markJokeAsTold,
   postNewJoke,
   markJokeAsUntold,
+  deleteJokes,
 } from "./services/jokeServices.js";
 import stevePic from "./assets/steve.png";
 
@@ -74,45 +75,75 @@ export const App = () => {
             Untold Jokes{" "}
             <span className="untold-count">{untoldJokes.length}</span>
           </h2>
-          {untoldJokes.map((joke) => {
-            const apiLink = `http://localhost:8088/jokes/${joke.id}`;
-            return (
-              <li className="joke-list-item" key={joke.id}>
-                {joke.text}
-                <button
-                  className="joke-list-action-toggle"
-                  onClick={async () => {
-                    await markJokeAsTold(joke.text, apiLink);
-                    HandlesJokeUpdate();
-                  }}
-                >
-                  <i className="fa-regular fa-face-smile-beam" />
-                </button>
-              </li>
-            );
-          })}
+          <ul>
+            {untoldJokes.map((joke) => {
+              const apiLink = `http://localhost:8088/jokes/${joke.id}`;
+              return (
+                <li className="joke-list-item" key={joke.id}>
+                  <p className="joke-list-item-text">{joke.text}</p>
+                  <div>
+                    <button
+                      className="joke-list-action-toggle"
+                      onClick={async () => {
+                        await markJokeAsTold(joke.text, apiLink);
+                        HandlesJokeUpdate();
+                      }}
+                    >
+                      <i className="fa-regular fa-face-smile-beam"></i>
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      className="joke-list-action-delete"
+                      onClick={async () => {
+                        await deleteJokes(apiLink);
+                        HandlesJokeUpdate();
+                      }}
+                    >
+                      <i class="fa-solid fa-skull-crossbones"></i>
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </article>
         <article className="joke-list-container">
           <h2>
             Told Jokes <span className="told-count">{toldJokes.length}</span>
           </h2>
-          {toldJokes.map((joke) => {
-            const apiLink = `http://localhost:8088/jokes/${joke.id}`;
-            return (
-              <li className="joke-list-item" key={joke.id}>
-                {joke.text}
-                <button
-                  className="joke-list-action-toggle"
-                  onClick={async () => {
-                    await markJokeAsUntold(joke.text, apiLink);
-                    HandlesJokeUpdate();
-                  }}
-                >
-                  <i className="fa-regular fa-face-meh" />
-                </button>
-              </li>
-            );
-          })}
+          <ul>
+            {toldJokes.map((joke) => {
+              const apiLink = `http://localhost:8088/jokes/${joke.id}`;
+              return (
+                <li className="joke-list-item" key={joke.id}>
+                  <p className="joke-list-item-text">{joke.text}</p>
+                  <div>
+                    <button
+                      className="joke-list-action-toggle"
+                      onClick={async () => {
+                        await markJokeAsUntold(joke.text, apiLink);
+                        HandlesJokeUpdate();
+                      }}
+                    >
+                      <i className="fa-regular fa-face-meh" />
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      className="joke-list-action-delete"
+                      onClick={async () => {
+                        await deleteJokes(apiLink);
+                        HandlesJokeUpdate();
+                      }}
+                    >
+                      <i class="fa-solid fa-skull-crossbones"></i>
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </article>
       </div>
     </div>

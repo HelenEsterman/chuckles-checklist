@@ -39,3 +39,13 @@ export const markJokeAsUntold = async (jokeText, apiLink) => {
   };
   await fetch(apiLink, putOptions);
 };
+
+export const deleteJokes = async (apiLink) => {
+  const deleteOptions = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  await fetch(apiLink, deleteOptions);
+};
