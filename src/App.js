@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { getJoke, postNewJoke } from "./services/jokeServices.js";
+import {
+  getJoke,
+  markJokeAsTold,
+  postNewJoke,
+  markJokeAsUntold,
+} from "./services/jokeServices.js";
 import stevePic from "./assets/steve.png";
 
 export const App = () => {
@@ -27,9 +32,9 @@ export const App = () => {
     setToldJokes(toldJokesArray);
   }, [allJokes]);
 
-  const handlesNewJokePost = () => {
+  const handlesNewJokePost = async () => {
     return newJoke !== ""
-      ? postNewJoke(newJoke)
+      ? await postNewJoke(newJoke)
       : window.alert("Input field empty, must enter a joke");
   };
 
@@ -70,9 +75,19 @@ export const App = () => {
             <span className="untold-count">{untoldJokes.length}</span>
           </h2>
           {untoldJokes.map((joke) => {
+            const apiLink = `http://localhost:8088/jokes/${joke.id}`;
             return (
               <li className="joke-list-item" key={joke.id}>
                 {joke.text}
+                <button
+                  className="joke-list-action-toggle"
+                  onClick={async () => {
+                    await markJokeAsTold(joke.text, apiLink);
+                    HandlesJokeUpdate();
+                  }}
+                >
+                  <i className="fa-regular fa-face-smile-beam" />
+                </button>
               </li>
             );
           })}
@@ -82,9 +97,19 @@ export const App = () => {
             Told Jokes <span className="told-count">{toldJokes.length}</span>
           </h2>
           {toldJokes.map((joke) => {
+            const apiLink = `http://localhost:8088/jokes/${joke.id}`;
             return (
               <li className="joke-list-item" key={joke.id}>
                 {joke.text}
+                <button
+                  className="joke-list-action-toggle"
+                  onClick={async () => {
+                    await markJokeAsUntold(joke.text, apiLink);
+                    HandlesJokeUpdate();
+                  }}
+                >
+                  <i className="fa-regular fa-face-meh" />
+                </button>
               </li>
             );
           })}
